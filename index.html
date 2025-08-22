@@ -1,1 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Name — Portfolio</title>
+  <meta name="description" content="Portfolio of Your Name: projects, resume, and contact info." />
+  <meta name="author" content="Your Name" />
+  <!-- Open Graph for nice link previews -->
+  <meta property="og:title" content="Your Name — Portfolio" />
+  <meta property="og:description" content="Projects, resume, and contact info." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourusername.github.io/" />
+  <meta property="og:image" content="assets/me.jpg" />
+  <style>
+    /* ====== Design tokens (edit these!) ====== */
+    :root {
+      --bg: #ffffff;          /* background */
+      --text: #0f172a;        /* slate-900 */
+      --muted: #475569;       /* slate-600 */
+      --primary: #2563eb;     /* blue-600 */
+      --card: #f8fafc;        /* slate-50 */
+      --border: #e2e8f0;      /* slate-200 */
+      --radius: 16px;
+      --maxw: 980px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1020;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --primary: #60a5fa;  /* blue-400 */
+        --card: #111827;      /* gray-900 */
+        --border: #1f2937;    /* gray-800 */
+      }
+    }
 
+    /* ====== Base ====== */
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; height: auto; display: block; }
+    .container { max-width: var(--maxw); margin: 0 auto; padding: 24px; }
+
+    /* ====== Layout ====== */
+    header {
+      position: sticky; top: 0; backdrop-filter: blur(8px);
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+    nav ul { list-style: none; margin: 0; padding: 12px 0; display: flex; gap: 18px; flex-wrap: wrap; }
+    nav a { font-weight: 600; }
+
+    .hero { display: grid; grid-template-columns: 120px 1fr; gap: 20px; align-items: center; margin-top: 24px; }
+    .avatar { width: 120px; aspect-ratio: 1; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+    .tagline { color: var(--muted); margin-top: 4px; }
+    .badges { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--card); font-size: 14px; }
+
+    section { margin: 48px 0; }
+    h1, h2 { line-height: 1.2; margin: 0 0 8px 0; }
+    h2 { font-size: 1.35rem; margin-bottom: 16px; }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .card { border: 1px solid var(--border); background: var(--card); border-radius: var(--radius); padding: 18px; }
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .card p { margin: 0 0 10px; color: var(--muted); }
+    .chip { display: inline-block; padding: 4px 8px; font-size: 12px; border-radius: 999px; border: 1px solid var(--border); margin-right: 6px; }
+
+    .resume-cta { display: inline-block; margin-top: 8px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); font-weight: 600; }
+
+    footer { border-top: 1px solid var(--border); padding: 24px 0; color: var(--muted); }
+
+    /* Mobile tweaks */
+    @media (max-width: 600px) { .hero { grid-template-columns: 1fr; } .avatar { justify-self: start; } }
+
+    /* Print: make resume link obvious */
+    @media print { nav, .badges, .cards .chip { display: none !important; } a::after { content: " (" attr(href) ")"; font-size: 90%; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#resume">Resume</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ====== About ====== -->
+    <section id="about" aria-labelledby="about-heading">
+      <div class="hero">
+        <!-- Replace assets/me.jpg with your photo (keep a square image for best results) -->
+        <img src="assets/me.jpg" alt="Portrait of Your Name" class="avatar" />
+        <div>
+          <h1 id="about-heading">Your Name</h1>
+          <p class="tagline">Short tagline: e.g., "Java developer & CS student"</p>
+          <div class="badges" role="list">
+            <a class="badge" href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
+            <a class="badge" href="https://www.linkedin.com/in/your-linkedin" target="_blank" rel="noopener">LinkedIn</a>
+            <!-- Replace resume.pdf with your actual filename -->
+            <a class="badge" href="resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+          </div>
+          <p>
+            <!-- Keep this 3–5 sentences. Say who you are, what you’re learning, and what you like building. -->
+            I'm a software developer who enjoys building clean, accessible web apps. I'm currently learning data structures and practicing Java and algorithms for internship interviews. Outside of code, I like hiking and coffee.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Projects ====== -->
+    <section id="projects" aria-labelledby="projects-heading">
+      <h2 id="projects-heading">Projects</h2>
+      <div class="cards">
+        <!-- Duplicate a card block per project -->
+        <article class="card">
+          <h3><a href="https://github.com/yourusername/project-one" target="_blank" rel="noopener">Project One</a></h3>
+          <p>One line summary of what it does and why it’s interesting. Optionally link to a live demo.</p>
+          <div>
+            <span class="chip">Java</span>
+            <span class="chip">Data Structures</span>
+            <span class="chip">Algorithms</span>
+          </div>
+        </article>
+        <article class="card">
+          <h3><a href="https://github.com/yourusername/mips-blackjack" target="_blank" rel="noopener">MIPS Blackjack</a></h3>
+          <p>Blackjack game written in MIPS assembly; demonstrates state machines, I/O, and testing.</p>
+          <div>
+            <span class="chip">MIPS</span>
+            <span class="chip">Assembly</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====== Resume ====== -->
+    <section id="resume" aria-labelledby="resume-heading">
+      <h2 id="resume-heading">Resume</h2>
+      <p>
+        You can <a class="resume-cta" href="resume.pdf" target="_blank" rel="noopener">open my resume</a> or download it. Keep a single up-to-date PDF in the repo.
+      </p>
+    </section>
+
+    <!-- ====== Contact ====== -->
+    <section id="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Contact</h2>
+      <p>
+        The easiest way to reach me is email: <a href="mailto:you@example.com">you@example.com</a>.
+        You can also DM me on LinkedIn.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <small>© <span id="y"></span> Your Name. Built with HTML + CSS and hosted on GitHub Pages.</small>
+    </div>
+  </footer>
+
+  <script>
+    // Set current year in footer automatically
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

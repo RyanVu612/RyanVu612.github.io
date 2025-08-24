@@ -82,6 +82,13 @@
 
     /* Print: make resume link obvious */
     @media print { nav, .badges, .cards .chip { display: none !important; } a::after { content: " (" attr(href) ")"; font-size: 90%; } }
+    /* ====== Table styles ====== */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; border: 2px solid var(--border); }
+    thead th { background: var(--card); }
+    th, td { border: 1px solid var(--border); padding: 10px; text-align: left; vertical-align: top; }
+    tbody tr:hover { background: color-mix(in srgb, var(--card) 70%, transparent); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 1, 1); white-space: nowrap; border: 0; }
   </style>
 </head>
 <body>

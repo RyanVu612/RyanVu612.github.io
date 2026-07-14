@@ -9,13 +9,15 @@ export async function renderProjectDetail(project: ProjectMetadata): Promise<str
 
   return `
     <article class="project-detail">
-      <a class="route-link back-link" href="/" data-route>Back to projects</a>
-      <header class="detail-header">
+      <a class="route-link back-link" href="/" data-route>← All projects</a>
+      <header class="detail-header boot">
         <p class="eyebrow">${escapeHtml(project.repo)}</p>
         <h1>${escapeHtml(project.name)}</h1>
         <p class="lede">${escapeHtml(project.description ?? content.summary)}</p>
         ${metadataRows(project)}
-        <a class="button" href="${escapeHtml(project.htmlUrl)}" target="_blank" rel="noreferrer">View repository</a>
+        <div class="intro-actions">
+          <a class="button" href="${escapeHtml(project.htmlUrl)}" target="_blank" rel="noreferrer">View repository</a>
+        </div>
       </header>
 
       <section class="section detail-copy" aria-labelledby="writeup-title">
@@ -23,7 +25,9 @@ export async function renderProjectDetail(project: ProjectMetadata): Promise<str
           <p class="eyebrow">Case study</p>
           <h2 id="writeup-title">Write-up</h2>
         </div>
-        ${content.writeup.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+        <div class="detail-copy__body">
+          ${content.writeup.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+        </div>
       </section>
 
       ${renderGallery(project.repo, images)}

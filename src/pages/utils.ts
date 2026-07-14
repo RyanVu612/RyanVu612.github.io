@@ -12,36 +12,47 @@ export function escapeHtml(value: string): string {
 
 export function formatDate(value: string | null): string {
   if (!value) {
-    return "Unavailable";
+    return "N/A";
   }
 
-  return new Intl.DateTimeFormat("en", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  }).format(new Date(value));
+  return new Date(value).toISOString().slice(0, 10);
+}
+
+const STATUS_LABELS: Record<ProjectMetadata["source"], string> = {
+  live: "Live GitHub data",
+  cache: "Cached GitHub data",
+  fallback: "GitHub data unavailable",
+};
+
+export function statusLight(source: ProjectMetadata["source"]): string {
+  const label = STATUS_LABELS[source];
+  return `<span class="status status--${source}" title="${label}"><span class="sr-only">${label}</span></span>`;
 }
 
 export function metadataRows(project: ProjectMetadata): string {
   if (project.source === "fallback") {
     return `
-      <p class="project-note">live data unavailable, view on GitHub</p>
+      <p class="project-note">${statusLight("fallback")} live data unavailable — view on GitHub</p>
     `;
   }
 
   return `
-    <dl class="meta-grid" aria-label="${escapeHtml(project.name)} GitHub metadata">
+    <dl class="readout" aria-label="${escapeHtml(project.name)} GitHub metadata">
       <div>
-        <dt>Language</dt>
-        <dd>${escapeHtml(project.language ?? "Not listed")}</dd>
+        <dt>Lang</dt>
+        <dd>${escapeHtml(project.language ?? "—")}</dd>
       </div>
       <div>
         <dt>Stars</dt>
         <dd>${project.stars ?? 0}</dd>
       </div>
       <div>
-        <dt>Updated</dt>
+        <dt>Pushed</dt>
         <dd>${formatDate(project.pushedAt)}</dd>
+      </div>
+      <div>
+        <dt>Link</dt>
+        <dd>${statusLight(project.source)} ${project.source === "live" ? "Live" : "Cached"}</dd>
       </div>
     </dl>
   `;

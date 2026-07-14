@@ -33,8 +33,9 @@ function parseRoute(pathname: string): Route {
 
 function shell(content: string): string {
   return `
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
-      <a class="site-mark" href="/" data-route>Ryan Vu</a>
+      <a class="site-mark" href="/" data-route>Ryan Vu<span class="site-mark__cursor" aria-hidden="true">_</span></a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="/" data-route>Projects</a>
         <a href="/resume" data-route>Resume</a>
@@ -57,8 +58,8 @@ function shell(content: string): string {
 function loadingView(): string {
   return `
     <section class="loading-view" aria-live="polite">
-      <p class="eyebrow">Loading</p>
-      <p>Fetching GitHub project metadata.</p>
+      <p class="eyebrow eyebrow--cursor">Establishing link</p>
+      <p class="lede">Fetching project telemetry from GitHub.</p>
     </section>
   `;
 }

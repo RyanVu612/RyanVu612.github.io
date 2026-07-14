@@ -2,15 +2,14 @@ import type { ProjectMetadata } from "../github";
 import { PROJECT_CONTENT } from "../content/projects";
 import { EXPERIENCE_REPOS, PERSONAL_PROJECT_REPOS } from "../projects.config";
 import type { ProjectRepo } from "../projects.config";
-import { escapeHtml, formatDate, presentProjectImages, statusLight } from "./utils";
+import { escapeHtml, formatDate, presentProjectImages } from "./utils";
 
 const headshotSrc = "/assets/image%20-%20Ryan%20Vu.jpeg";
 
-function projectCard(project: ProjectMetadata, index: number, imageSrc: string | null): string {
+function projectCard(project: ProjectMetadata, imageSrc: string | null): string {
   const content = PROJECT_CONTENT[project.repo];
   const description = project.description ?? content.summary;
   const href = `/projects/${encodeURIComponent(project.repo)}`;
-  const id = String(index + 1).padStart(2, "0");
   const image = imageSrc
     ? `<img class="card__image" src="${escapeHtml(imageSrc)}" alt="${escapeHtml(project.name)} preview" loading="lazy" />`
     : "";
@@ -21,10 +20,6 @@ function projectCard(project: ProjectMetadata, index: number, imageSrc: string |
 
   return `
     <article class="card" data-project-href="${href}" tabindex="0">
-      <header class="card__rail">
-        <span class="card__index">${id}</span>
-        ${statusLight(project.source)}
-      </header>
       <div class="card__body">
         ${image}
         <div class="card__copy">
@@ -40,36 +35,27 @@ function projectCard(project: ProjectMetadata, index: number, imageSrc: string |
   `;
 }
 
-type CardGroup = {
-  ordered: ProjectMetadata[];
-  cards: string[];
-  liveCount: number;
-};
-
-async function buildCardGroup(repos: readonly ProjectRepo[], projects: ProjectMetadata[]): Promise<CardGroup> {
+async function buildCards(repos: readonly ProjectRepo[], projects: ProjectMetadata[]): Promise<string[]> {
   const ordered = repos
     .map((repo) => projects.find((project) => project.repo === repo))
     .filter((project): project is ProjectMetadata => Boolean(project));
 
-  const cards = await Promise.all(
-    ordered.map(async (project, index) => {
+  return Promise.all(
+    ordered.map(async (project) => {
       const content = PROJECT_CONTENT[project.repo];
       const [imageSrc] = await presentProjectImages(project.repo, content.images.slice(0, 1));
-      return projectCard(project, index, imageSrc ?? null);
+      return projectCard(project, imageSrc ?? null);
     }),
   );
-
-  const liveCount = ordered.filter((project) => project.source !== "fallback").length;
-  return { ordered, cards, liveCount };
 }
 
 function cardsSection(options: {
   id: string;
   eyebrow: string;
   title: string;
-  group: CardGroup;
+  cards: string[];
 }): string {
-  const { id, eyebrow, title, group } = options;
+  const { id, eyebrow, title, cards } = options;
 
   return `
     <section class="section" id="${id}" aria-labelledby="${id}-title">
@@ -78,23 +64,22 @@ function cardsSection(options: {
           <p class="eyebrow">${eyebrow}</p>
           <h2 id="${id}-title">${title}</h2>
         </div>
-        <p class="section-heading__note">${String(group.cards.length).padStart(2, "0")} modules · ${String(group.liveCount).padStart(2, "0")} linked</p>
       </div>
       <div class="project-grid">
-        ${group.cards.join("")}
+        ${cards.join("")}
       </div>
     </section>
   `;
 }
 
 export async function renderExperience(projects: ProjectMetadata[]): Promise<string> {
-  const group = await buildCardGroup(EXPERIENCE_REPOS, projects);
-  return cardsSection({ id: "experience", eyebrow: "Team & applied work", title: "Experience", group });
+  const cards = await buildCards(EXPERIENCE_REPOS, projects);
+  return cardsSection({ id: "experience", eyebrow: "Team & applied work", title: "Experience", cards });
 }
 
 export async function renderProjects(projects: ProjectMetadata[]): Promise<string> {
-  const group = await buildCardGroup(PERSONAL_PROJECT_REPOS, projects);
-  return cardsSection({ id: "projects", eyebrow: "Personal builds", title: "Projects", group });
+  const cards = await buildCards(PERSONAL_PROJECT_REPOS, projects);
+  return cardsSection({ id: "projects", eyebrow: "Personal builds", title: "Projects", cards });
 }
 
 export function renderHome(): string {

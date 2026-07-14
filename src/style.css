@@ -83,7 +83,6 @@ object {
 .eyebrow,
 .button,
 .route-link,
-.card__rail,
 .card__meta,
 .card__cta,
 .section-heading__note,
@@ -406,16 +405,6 @@ h3 {
 .card:focus-visible {
   outline: 1px solid var(--accent);
   outline-offset: 6px;
-}
-
-.card__rail {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 0.7rem;
-  border-bottom: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 0.68rem;
 }
 
 .card__title {

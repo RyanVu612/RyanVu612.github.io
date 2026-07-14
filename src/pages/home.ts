@@ -1,31 +1,39 @@
 import type { ProjectMetadata } from "../github";
 import { PROJECT_CONTENT } from "../content/projects";
 import { PROJECT_REPOS } from "../projects.config";
-import { escapeHtml, metadataRows } from "./utils";
+import { escapeHtml, presentProjectImages } from "./utils";
 
 const headshotSrc = "/assets/image%20-%20Ryan%20Vu.jpeg";
 
-function projectCard(project: ProjectMetadata): string {
+function projectCard(project: ProjectMetadata, imageSrc: string | null): string {
   const content = PROJECT_CONTENT[project.repo];
   const description = project.description ?? content.summary;
+  const href = `/projects/${encodeURIComponent(project.repo)}`;
+  const image = imageSrc
+    ? `<img class="project-card__image" src="${escapeHtml(imageSrc)}" alt="${escapeHtml(project.name)} preview" loading="lazy" />`
+    : "";
 
   return `
-    <article class="project-card" data-project-href="/projects/${encodeURIComponent(project.repo)}" tabindex="0">
-      <div class="project-card__topline">
-        <span class="eyebrow">${escapeHtml(project.repo)}</span>
-        <a class="external-link" href="${escapeHtml(project.htmlUrl)}" target="_blank" rel="noreferrer">GitHub</a>
-      </div>
-      <h3>${escapeHtml(project.name)}</h3>
+    <article class="project-card" data-project-href="${href}" tabindex="0">
+      <h3 class="project-card__title">${escapeHtml(project.name)}</h3>
+      ${image}
       <p>${escapeHtml(description)}</p>
-      ${metadataRows(project)}
-      <a class="route-link project-card__details" href="/projects/${encodeURIComponent(project.repo)}" data-route>View project</a>
+      <a class="route-link project-card__cta" href="${href}" data-route>View project</a>
     </article>
   `;
 }
 
-export function renderHome(projects: ProjectMetadata[]): string {
+export async function renderHome(projects: ProjectMetadata[]): Promise<string> {
   const orderedProjects = PROJECT_REPOS.map((repo) => projects.find((project) => project.repo === repo)).filter(
     (project): project is ProjectMetadata => Boolean(project),
+  );
+
+  const cards = await Promise.all(
+    orderedProjects.map(async (project) => {
+      const content = PROJECT_CONTENT[project.repo];
+      const [imageSrc] = await presentProjectImages(project.repo, content.images.slice(0, 1));
+      return projectCard(project, imageSrc ?? null);
+    }),
   );
 
   return `
@@ -53,7 +61,7 @@ export function renderHome(projects: ProjectMetadata[]): string {
         <h2 id="projects-title">Projects</h2>
       </div>
       <div class="project-grid">
-        ${orderedProjects.map(projectCard).join("")}
+        ${cards.join("")}
       </div>
     </section>
 

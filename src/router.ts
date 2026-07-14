@@ -83,7 +83,7 @@ export function startRouter(root: HTMLElement): void {
       let view = "";
 
       if (route.name === "home") {
-        view = renderHome(projects);
+        view = await renderHome(projects);
       } else if (route.name === "resume") {
         view = renderResume();
       } else if (route.name === "project") {

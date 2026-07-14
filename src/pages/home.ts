@@ -25,13 +25,17 @@ function projectCard(project: ProjectMetadata, index: number, imageSrc: string |
         <span class="card__index">${id}</span>
         ${statusLight(project.source)}
       </header>
-      ${image}
-      <h3 class="card__title">${escapeHtml(project.name)}</h3>
-      <p class="card__desc">${escapeHtml(description)}</p>
-      <footer class="card__meta">
-        ${meta}
-        <a class="card__cta" href="${href}" data-route>Open →</a>
-      </footer>
+      <div class="card__body">
+        ${image}
+        <div class="card__copy">
+          <h3 class="card__title">${escapeHtml(project.name)}</h3>
+          <p class="card__desc">${escapeHtml(description)}</p>
+          <footer class="card__meta">
+            ${meta}
+            <a class="card__cta" href="${href}" data-route>Open →</a>
+          </footer>
+        </div>
+      </div>
     </article>
   `;
 }

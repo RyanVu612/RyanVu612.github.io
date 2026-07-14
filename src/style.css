@@ -436,8 +436,23 @@ h3 {
   color: var(--accent);
 }
 
+.card__body {
+  display: flex;
+  gap: 1.1rem;
+  flex: 1;
+}
+
+.card__copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
 .card__image {
-  width: 100%;
+  flex: none;
+  width: min(280px, 34%);
   aspect-ratio: 16 / 10;
   object-fit: cover;
   border: 1px solid var(--line);
@@ -675,9 +690,12 @@ h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .contact-links {
-    justify-content: flex-start;
-    margin-top: 1rem;
+  .card__body {
+    flex-direction: column;
+  }
+
+  .card__image {
+    width: 100%;
   }
 }
 

@@ -1,12 +1,14 @@
 import { fetchAllProjectMetadata, type ProjectMetadata } from "./github";
 import { isProjectRepo, PROJECT_REPOS } from "./projects.config";
-import { renderHome } from "./pages/home";
+import { renderExperience, renderHome, renderProjects } from "./pages/home";
 import { renderNotFound } from "./pages/notFound";
 import { renderProjectDetail } from "./pages/projectDetail";
 import { renderResume } from "./pages/resume";
 
 type Route =
   | { name: "home" }
+  | { name: "experience" }
+  | { name: "projects" }
   | { name: "resume" }
   | { name: "project"; repo: string }
   | { name: "not-found" };
@@ -16,6 +18,14 @@ function parseRoute(pathname: string): Route {
 
   if (path === "/") {
     return { name: "home" };
+  }
+
+  if (path === "/experience") {
+    return { name: "experience" };
+  }
+
+  if (path === "/projects") {
+    return { name: "projects" };
   }
 
   if (path === "/resume") {
@@ -31,15 +41,20 @@ function parseRoute(pathname: string): Route {
   return { name: "not-found" };
 }
 
-function shell(content: string): string {
+function shell(content: string, route: Route): string {
+  const navLink = (href: string, label: string, active: boolean): string =>
+    `<a href="${href}" data-route${active ? ` aria-current="page"` : ""}>${label}</a>`;
+
   return `
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
       <a class="site-mark" href="/" data-route>Ryan Vu<span class="site-mark__cursor" aria-hidden="true">_</span></a>
       <nav class="site-nav" aria-label="Primary navigation">
-        <a href="/" data-route>Projects</a>
-        <a href="/resume" data-route>Resume</a>
-        <a href="mailto:vuryan612@gmail.com">Email</a>
+        ${navLink("/", "Home", route.name === "home")}
+        ${navLink("/experience", "Experience", route.name === "experience")}
+        ${navLink("/projects", "Projects", route.name === "projects" || route.name === "project")}
+        ${navLink("/resume", "Resume", route.name === "resume")}
+        <a href="mailto:ryanvu@cpp.edu">Email</a>
         <a href="https://github.com/RyanVu612" target="_blank" rel="noreferrer">GitHub</a>
         <a href="https://www.linkedin.com/in/ryan-q-vu/" target="_blank" rel="noreferrer">LinkedIn</a>
       </nav>
@@ -48,9 +63,10 @@ function shell(content: string): string {
       ${content}
     </main>
     <footer class="site-footer">
-      <span>Ryan Vu</span>
-      <span>vuryan612@gmail.com</span>
-      <span>github.com/RyanVu612</span>
+      <span>Ryan Vu · Villa Park, CA</span>
+      <a href="mailto:ryanvu@cpp.edu">ryanvu@cpp.edu</a>
+      <a href="https://www.linkedin.com/in/ryan-q-vu/" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a href="https://github.com/RyanVu612" target="_blank" rel="noreferrer">GitHub</a>
     </footer>
   `;
 }
@@ -77,14 +93,18 @@ export function startRouter(root: HTMLElement): void {
 
   async function render(): Promise<void> {
     const route = parseRoute(window.location.pathname);
-    root.innerHTML = shell(loadingView());
+    root.innerHTML = shell(loadingView(), route);
 
     try {
       const projects = await projectDataPromise;
       let view = "";
 
       if (route.name === "home") {
-        view = await renderHome(projects);
+        view = renderHome();
+      } else if (route.name === "experience") {
+        view = await renderExperience(projects);
+      } else if (route.name === "projects") {
+        view = await renderProjects(projects);
       } else if (route.name === "resume") {
         view = renderResume();
       } else if (route.name === "project") {
@@ -94,7 +114,7 @@ export function startRouter(root: HTMLElement): void {
         view = renderNotFound();
       }
 
-      root.innerHTML = shell(view);
+      root.innerHTML = shell(view, route);
       attachProjectCardHandlers(root, navigate);
     } catch {
       projectDataPromise = Promise.resolve(PROJECT_REPOS.map((repo) => ({

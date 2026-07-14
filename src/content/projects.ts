@@ -96,4 +96,15 @@ export const PROJECT_CONTENT: Record<ProjectRepo, ProjectContent> = {
     ],
     images: [],
   },
+  "CS2640-Blackjack": {
+    title: "CS2640-Blackjack",
+    summary:
+      "A fully playable Blackjack game written in MIPS assembly, running in the MARS simulator with an interactive console interface.",
+    writeup: [
+      "CS2640-Blackjack implements the complete game loop of Blackjack — dealing, hitting, standing, and win/loss resolution — entirely in MIPS assembly, with all game state managed in registers and memory by hand.",
+      "Ryan's role covers the whole program: structuring the control flow with syscalls for console I/O, factoring repeated logic into assembly macros, and keeping the game playable through MARS's Run I/O interface.",
+      "The notable challenge is doing everything without a high-level language: no data structures, no standard library, just registers, branches, and memory. The project shows how far disciplined low-level code organization can go.",
+    ],
+    images: [],
+  },
 };

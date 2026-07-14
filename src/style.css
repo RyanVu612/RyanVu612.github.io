@@ -193,6 +193,10 @@ h3 {
   color: var(--accent);
 }
 
+.site-nav a[aria-current="page"] {
+  color: var(--accent);
+}
+
 .site-main {
   width: min(100%, 1180px);
   margin: 0 auto;
@@ -208,6 +212,15 @@ h3 {
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 0.7rem;
+}
+
+.site-footer a {
+  color: var(--muted);
+  text-decoration-color: var(--line-strong);
+}
+
+.site-footer a:hover {
+  color: var(--accent);
 }
 
 /* ---- Hero ---- */
@@ -512,34 +525,6 @@ h3 {
   text-transform: uppercase;
 }
 
-/* ---- Contact ---- */
-
-.contact-strip {
-  display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: 1rem;
-  align-items: center;
-  padding: clamp(1.5rem, 4vw, 3rem) 0;
-  border-top: 1px solid var(--line);
-}
-
-.contact-links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 0.75rem 1.5rem;
-}
-
-.contact-links a {
-  color: var(--text);
-  overflow-wrap: anywhere;
-  text-decoration-color: var(--line-strong);
-}
-
-.contact-links a:hover {
-  color: var(--accent);
-}
-
 /* ---- Detail / resume / states ---- */
 
 .project-detail,
@@ -663,7 +648,6 @@ h3 {
 @media (max-width: 760px) {
   .site-header,
   .hero,
-  .contact-strip,
   .detail-copy,
   .section-heading {
     display: block;

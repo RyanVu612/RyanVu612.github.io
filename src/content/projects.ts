@@ -63,6 +63,17 @@ export const PROJECT_CONTENT: Record<ProjectRepo, ProjectContent> = {
     ],
     images: [],
   },
+  CoSA: {
+    title: "CoSA",
+    summary:
+      "A structured software project presented as a focused build around a specific workflow Ryan wanted to make more reliable and usable.",
+    writeup: [
+      "CoSA is presented as a project where the goal is to take a repeated task and give it a dependable shape: clear inputs, understandable state, and outputs a user can trust without second-guessing the tooling.",
+      "Ryan's role is in defining the structure and implementation boundaries, connecting the interface to the underlying logic while keeping the moving parts explicit and easy to reason about.",
+      "The notable challenge is keeping the project simple as it grows. It favors predictable behavior, testable seams, and conventions that let future additions land without making the whole surface harder to follow.",
+    ],
+    images: [],
+  },
   hub: {
     title: "hub",
     summary:

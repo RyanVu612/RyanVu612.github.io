@@ -6,6 +6,7 @@ export const PROJECT_REPOS = [
   "rotorboard",
   "bach-path",
   "rocklog",
+  "CoSA",
   "hub",
   "2024_Robot",
 ] as const;
